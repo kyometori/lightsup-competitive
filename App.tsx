@@ -9,7 +9,7 @@ import FailureModal from './components/FailureModal.tsx';
 import HelpModal from './components/HelpModal.tsx';
 import PreferencesModal from './components/PreferencesModal.tsx';
 import SeedModal from './components/SeedModal.tsx';
-import { PlayIcon, TimerIcon, RestartIcon, StopIcon, QuestionMarkCircleIcon, TrashIcon, CogIcon, KeyIcon } from './components/icons.tsx';
+import { PlayIcon, TimerIcon, RestartIcon, StopIcon, QuestionMarkCircleIcon, TrashIcon, CogIcon, KeyIcon, GithubIcon } from './components/icons.tsx';
 
 const NUM_BOARDS = 3;
 const HARD_MODE_IDLE_SECONDS = 10;
@@ -364,6 +364,17 @@ const App: React.FC = () => {
             <PlayIcon className="w-6 h-6" />
             Start Game <span className="text-slate-900/60 font-mono text-sm">(Spacebar)</span>
           </button>
+
+          <a
+            href="https://github.com/kyometori/lightsup-competitive"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-8 flex items-center gap-2 text-slate-500 hover:text-slate-300 transition-colors"
+            aria-label="View source code on GitHub"
+          >
+            <GithubIcon className="w-5 h-5" />
+            <span>Source Code</span>
+          </a>
         </div>
       )}
       
