@@ -1,0 +1,6 @@
+{
+  "name": "LightsUp Competitive",
+  "description": "A competitive version of the Lights Up puzzle game. Solve three 5x5 boards against the clock by turning all the lights on. Clicking a tile flips it and its adjacent tiles. Match the target patterns as fast as you can!",
+  "requestFramePermissions": [],
+  "prompt": ""
+}
