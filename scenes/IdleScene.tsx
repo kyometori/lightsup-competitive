@@ -67,11 +67,11 @@ const IdleScene: React.FC<IdleSceneProps> = ({
             <div className="flex items-center justify-center gap-6 mb-6" role="group" aria-labelledby="game-modes-label">
                 <span id="game-modes-label" className="sr-only">Game modes</span>
                 <label className="flex items-center gap-2 cursor-pointer text-slate-300 hover:text-white transition-colors" title="Start with randomly scrambled boards">
-                    <input type="checkbox" checked={gameModes.isRandom} onChange={(e) => setGameModes.setIsRandomMode(e.target.checked)} className="form-checkbox bg-slate-700 border-slate-600 text-cyan-400 focus:ring-cyan-400 focus:ring-offset-slate-900" />
+                    <input type="checkbox" checked={gameModes.isRandom} onChange={(e) => { setGameModes.setIsRandomMode(e.target.checked); e.currentTarget.blur(); }} className="form-checkbox bg-slate-700 border-slate-600 text-cyan-400 focus:ring-cyan-400 focus:ring-offset-slate-900" />
                     Random Start
                 </label>
                 <label className="flex items-center gap-2 cursor-pointer text-slate-300 hover:text-white transition-colors" title="Game over if a board is idle for 10s">
-                    <input type="checkbox" checked={gameModes.isHard} onChange={(e) => setGameModes.setIsHardMode(e.target.checked)} className="form-checkbox bg-slate-700 border-slate-600 text-red-500 focus:ring-red-500 focus:ring-offset-slate-900" />
+                    <input type="checkbox" checked={gameModes.isHard} onChange={(e) => { setGameModes.setIsHardMode(e.target.checked); e.currentTarget.blur(); }} className="form-checkbox bg-slate-700 border-slate-600 text-red-500 focus:ring-red-500 focus:ring-offset-slate-900" />
                     Hard Mode
                 </label>
             </div>
