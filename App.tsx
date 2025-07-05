@@ -84,7 +84,7 @@ const App: React.FC = () => {
           } else if (e.code === 'KeyQ') {
             e.preventDefault();
             game.quitGame();
-          } else if (e.code === 'KeyC') {
+          } else if (e.code === 'KeyC' && !e.metaKey && !e.ctrlKey) {
             e.preventDefault();
             resultsModalRef.current?.handleCopy();
           }

@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { GameModes, BestTimeRecord } from '../types.ts';
 import TimerDisplay from '../components/TimerDisplay.tsx';
-import { PlayIcon, QuestionMarkCircleIcon, TrashIcon, CogIcon, KeyIcon } from '../components/icons.tsx';
+import { PlayIcon, QuestionMarkCircleIcon, CogIcon, KeyIcon } from '../components/icons.tsx';
+import ClearRecordControl from '../components/ClearRecordControl.tsx';
 
 interface IdleSceneProps {
     gameModes: GameModes;
@@ -33,18 +34,7 @@ const IdleScene: React.FC<IdleSceneProps> = ({
     onClearAllRecords,
     showAnimations
 }) => {
-    const [isClearMenuVisible, setIsClearMenuVisible] = useState<boolean>(false);
     const animationClass = showAnimations ? 'animate-fade-in' : '';
-
-    const handleClearCurrent = () => {
-        onClearCurrentRecord();
-        setIsClearMenuVisible(false);
-    }
-
-    const handleClearAll = () => {
-        onClearAllRecords();
-        setIsClearMenuVisible(false);
-    }
     
     return (
         <div className={`flex flex-col items-center justify-center text-center p-8 sm:p-10 bg-slate-800/50 rounded-2xl shadow-xl ${animationClass} relative`}>
@@ -76,31 +66,30 @@ const IdleScene: React.FC<IdleSceneProps> = ({
                 </label>
             </div>
 
-            <div className="relative bg-slate-900/50 rounded-lg py-2 px-4 mb-8 w-64 text-center">
-                <div className="flex items-center justify-center gap-3">
-                    <div className="flex-1 text-center">
-                        <p className="text-xs text-slate-400 uppercase font-semibold">Best Time</p>
-                        {bestTime ? <TimerDisplay timeInMs={bestTime.time} className="text-white" /> : <span className="font-mono text-2xl text-slate-500">-:--.--</span>}
-                    </div>
-                    {bestTime && (
-                        <button onClick={() => setIsClearMenuVisible(v => !v)} className="text-slate-500 hover:text-red-400 transition-colors p-1" title="Clear records">
-                            <TrashIcon className="w-5 h-5" />
-                        </button>
+            <div className="relative bg-slate-900/60 rounded-xl p-4 mb-8 w-72 text-center shadow-lg border border-slate-700/50">
+                <div className="flex justify-between items-center mb-1">
+                    <p className="text-sm text-slate-400 uppercase font-semibold">Best Time</p>
+                    <ClearRecordControl 
+                        bestTime={bestTime}
+                        onClearCurrent={onClearCurrentRecord}
+                        onClearAll={onClearAllRecords}
+                    />
+                </div>
+                
+                {bestTime ? (
+                    <TimerDisplay timeInMs={bestTime.time} className="text-white text-3xl block" />
+                ) : (
+                    <span className="font-mono text-3xl text-slate-500 block">-:--.--</span>
+                )}
+
+                <div className="mt-2 pt-2 border-t border-slate-700/50 h-[38px] flex items-center justify-center">
+                    {bestTime?.seed && (
+                        <p className="text-xs text-slate-400 flex items-center justify-center gap-1.5">
+                            <KeyIcon className="w-3.5 h-3.5" />
+                            Seed: <span className={`font-mono truncate ${bestTime.isUserProvidedSeed ? 'text-yellow-400/80' : 'text-slate-400/80'}`} title={bestTime.seed}>{bestTime.seed}</span>
+                        </p>
                     )}
                 </div>
-                {bestTime && bestTime.seed && (
-                    <div className="mt-1">
-                        <p className="text-xs text-slate-500">
-                            Seed: <span className={`font-mono truncate ${bestTime.isUserProvidedSeed ? 'text-yellow-400/70' : 'text-slate-400'}`} title={bestTime.seed}>{bestTime.seed}</span>
-                        </p>
-                    </div>
-                )}
-                {isClearMenuVisible && (
-                    <div className="absolute top-full mt-2 right-0 bg-slate-700 rounded-md shadow-lg p-2 flex flex-col gap-2 w-48 z-10">
-                        <button onClick={handleClearCurrent} className="text-left text-sm w-full px-3 py-1.5 rounded hover:bg-slate-600">Clear for this mode</button>
-                        <button onClick={handleClearAll} className="text-left text-sm w-full px-3 py-1.5 rounded hover:bg-red-500/50 text-red-400 hover:text-white">Clear all records</button>
-                    </div>
-                )}
             </div>
 
             {seed && (
