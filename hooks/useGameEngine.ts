@@ -22,6 +22,7 @@ export const useGameEngine = () => {
   const [playerBoards, setPlayerBoards] = useState<BoardState[]>(() => Array(NUM_BOARDS).fill(createInitialBoard(false)));
   const [boardSolved, setBoardSolved] = useState<boolean[]>(Array(NUM_BOARDS).fill(false));
   const [boardTimers, setBoardTimers] = useState<number[]>(Array(NUM_BOARDS).fill(0));
+  const [finalBoardTimers, setFinalBoardTimers] = useState<number[] | null>(null);
   const [boardClicks, setBoardClicks] = useState<number[]>(Array(NUM_BOARDS).fill(0));
   const [lastInteractionTime, setLastInteractionTime] = useState<number[]>([]);
   const [failureReason, setFailureReason] = useState<string>('');
@@ -35,6 +36,7 @@ export const useGameEngine = () => {
     setPlayerBoards(Array(NUM_BOARDS).fill(createInitialBoard(false)));
     setBoardSolved(Array(NUM_BOARDS).fill(false));
     setBoardTimers(Array(NUM_BOARDS).fill(0));
+    setFinalBoardTimers(null);
     setBoardClicks(Array(NUM_BOARDS).fill(0));
     setFailureReason('');
     setLastInteractionTime([]);
@@ -165,11 +167,17 @@ export const useGameEngine = () => {
     }
     
     if (newSolvedBoards.every(s => s)) {
+        setFinalBoardTimers(boardTimers);
         setGameState(GameState.FINISHED);
-        const totalSolveTime = boardTimers.reduce((sum, time) => sum + time, 0);
-        saveBestTime(totalSolveTime, gameModes, activeGameSeed, isUserSeeded);
     }
-  }, [playerBoards, targetBoards, gameState, boardSolved, boardTimers, gameModes, activeGameSeed, isUserSeeded]);
+  }, [playerBoards, targetBoards, gameState, boardSolved, boardTimers]);
+
+  useEffect(() => {
+    if (gameState === GameState.FINISHED && finalBoardTimers) {
+      const totalSolveTime = finalBoardTimers.reduce((sum, time) => sum + time, 0);
+      saveBestTime(totalSolveTime, gameModes, activeGameSeed, isUserSeeded);
+    }
+  }, [gameState, finalBoardTimers, gameModes, activeGameSeed, isUserSeeded]);
 
   useEffect(() => {
     let animationFrameId: number;
@@ -210,7 +218,7 @@ export const useGameEngine = () => {
     targetBoards,
     playerBoards,
     boardSolved,
-    boardTimers,
+    boardTimers: finalBoardTimers ?? boardTimers,
     boardClicks,
     failureReason,
     countdownValue,
