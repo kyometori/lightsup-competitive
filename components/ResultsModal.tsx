@@ -110,8 +110,8 @@ const ResultsModal = forwardRef<ResultsModalRef, ResultsModalProps>(({ finalTime
             {/* Game Info Footer */}
             <div className="border-t border-slate-700 pt-4 text-center">
                  <div className="flex justify-center items-center flex-wrap gap-2">
-                    {gameModes.isRandom && <span className="bg-cyan-500/20 text-cyan-300 text-xs font-semibold px-3 py-1 rounded-full">Random Start</span>}
-                    {gameModes.isHard && <span className="bg-red-500/20 text-red-300 text-xs font-semibold px-3 py-1 rounded-full">Hard Mode</span>}
+                    {gameModes.isRandom && <span className="bg-cyan-500/20 text-cyan-300 text-xs font-semibold px-3 py-1 rounded-full whitespace-nowrap">Random Start</span>}
+                    {gameModes.isHard && <span className="bg-red-500/20 text-red-300 text-xs font-semibold px-3 py-1 rounded-full whitespace-nowrap">Hard Mode</span>}
                     {seed && (
                         <span className={`inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1 rounded-full ${isUserProvidedSeed ? 'bg-yellow-500/20 text-yellow-300' : 'bg-purple-500/20 text-purple-300'}`}>
                             <KeyIcon className="w-3 h-3" />
