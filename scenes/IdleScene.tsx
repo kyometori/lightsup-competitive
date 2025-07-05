@@ -1,8 +1,8 @@
 import React from 'react';
 import { GameModes, BestTimeRecord } from '../types.ts';
-import TimerDisplay from '../components/TimerDisplay.tsx';
 import { PlayIcon, QuestionMarkCircleIcon, CogIcon, KeyIcon } from '../components/icons.tsx';
-import ClearRecordControl from '../components/ClearRecordControl.tsx';
+import GameModeToggle from '../components/GameModeToggle.tsx';
+import BestTimeDisplay from '../components/BestTimeDisplay.tsx';
 
 interface IdleSceneProps {
     gameModes: GameModes;
@@ -56,41 +56,27 @@ const IdleScene: React.FC<IdleSceneProps> = ({
 
             <div className="flex items-center justify-center gap-6 mb-6" role="group" aria-labelledby="game-modes-label">
                 <span id="game-modes-label" className="sr-only">Game modes</span>
-                <label className="flex items-center gap-2 cursor-pointer text-slate-300 hover:text-white transition-colors" title="Start with randomly scrambled boards">
-                    <input type="checkbox" checked={gameModes.isRandom} onChange={(e) => { setGameModes.setIsRandomMode(e.target.checked); e.currentTarget.blur(); }} className="form-checkbox bg-slate-700 border-slate-600 text-cyan-400 focus:ring-cyan-400 focus:ring-offset-slate-900" />
-                    Random Start
-                </label>
-                <label className="flex items-center gap-2 cursor-pointer text-slate-300 hover:text-white transition-colors" title="Game over if a board is idle for 10s">
-                    <input type="checkbox" checked={gameModes.isHard} onChange={(e) => { setGameModes.setIsHardMode(e.target.checked); e.currentTarget.blur(); }} className="form-checkbox bg-slate-700 border-slate-600 text-red-500 focus:ring-red-500 focus:ring-offset-slate-900" />
-                    Hard Mode
-                </label>
+                <GameModeToggle
+                    label="Random Start"
+                    title="Start with randomly scrambled boards"
+                    checked={gameModes.isRandom}
+                    onChange={setGameModes.setIsRandomMode}
+                    className="text-cyan-400 focus:ring-cyan-400"
+                />
+                <GameModeToggle
+                    label="Hard Mode"
+                    title="Game over if a board is idle for 10s"
+                    checked={gameModes.isHard}
+                    onChange={setGameModes.setIsHardMode}
+                    className="text-red-500 focus:ring-red-500"
+                />
             </div>
-
-            <div className="relative bg-slate-900/60 rounded-xl p-4 mb-8 w-72 text-center shadow-lg border border-slate-700/50">
-                <div className="flex justify-between items-center mb-1">
-                    <p className="text-sm text-slate-400 uppercase font-semibold">Best Time</p>
-                    <ClearRecordControl 
-                        bestTime={bestTime}
-                        onClearCurrent={onClearCurrentRecord}
-                        onClearAll={onClearAllRecords}
-                    />
-                </div>
-                
-                {bestTime ? (
-                    <TimerDisplay timeInMs={bestTime.time} className="text-white text-3xl block" />
-                ) : (
-                    <span className="font-mono text-3xl text-slate-500 block">-:--.--</span>
-                )}
-
-                <div className="mt-2 pt-2 border-t border-slate-700/50 h-[38px] flex items-center justify-center">
-                    {bestTime?.seed && (
-                        <p className="text-xs text-slate-400 flex items-center justify-center gap-1.5">
-                            <KeyIcon className="w-3.5 h-3.5" />
-                            Seed: <span className={`font-mono truncate ${bestTime.isUserProvidedSeed ? 'text-yellow-400/80' : 'text-slate-400/80'}`} title={bestTime.seed}>{bestTime.seed}</span>
-                        </p>
-                    )}
-                </div>
-            </div>
+            
+            <BestTimeDisplay
+              bestTime={bestTime}
+              onClearCurrentRecord={onClearCurrentRecord}
+              onClearAllRecords={onClearAllRecords}
+            />
 
             {seed && (
                 <div className="text-center -mt-6 mb-6">

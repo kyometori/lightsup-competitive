@@ -1,6 +1,7 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { UserPreferences } from '../types.ts';
 import { StopIcon, RestartIcon, TrashIcon } from './icons.tsx';
+import ModalWrapper from './ModalWrapper.tsx';
 
 interface SeedModalProps {
   initialSeed: string;
@@ -18,40 +19,38 @@ const SeedModal: React.FC<SeedModalProps> = ({ initialSeed, onSave, onClose, pre
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
+      // Allows submitting by pressing Enter anywhere in the modal
       if (e.key === 'Enter') {
         e.preventDefault();
         handleSave();
       }
     };
+    
     window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
   }, [handleSave]);
 
-  const handleGenerateRandom = () => {
+  const handleGenerateRandom = (e: React.MouseEvent<HTMLButtonElement>) => {
     const randomSeed = Math.random().toString(36).substring(2, 10).toUpperCase();
     setSeed(randomSeed);
+    e.currentTarget.blur();
   };
 
-  const handleClear = () => {
+  const handleClear = (e: React.MouseEvent<HTMLButtonElement>) => {
       setSeed('');
+      e.currentTarget.blur();
   }
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     handleSave();
   };
-  
-  const handleOverlayClick = (e: React.MouseEvent<HTMLDivElement>) => {
-    // Close the modal only if the click is on the overlay itself
-    if (e.target === e.currentTarget) {
-      onClose();
-    }
-  };
-
-  const animationClass = preferences.showAnimations ? 'animate-fade-in' : '';
 
   return (
-    <div onClick={handleOverlayClick} className={`fixed inset-0 bg-black/70 flex items-center justify-center p-4 z-50 ${animationClass}`}>
+    <ModalWrapper onClose={onClose} showAnimations={preferences.showAnimations}>
       <form onSubmit={handleSubmit} className="bg-slate-800 rounded-2xl shadow-2xl p-8 w-full max-w-md text-left border border-slate-700 relative">
         <button
           type="button"
@@ -80,6 +79,7 @@ const SeedModal: React.FC<SeedModalProps> = ({ initialSeed, onSave, onClose, pre
                         onChange={(e) => setSeed(e.target.value.toUpperCase())}
                         placeholder="Enter a seed..."
                         className="flex-grow bg-slate-900 border border-slate-600 text-slate-200 rounded-md py-2 px-3 focus:ring-2 focus:ring-cyan-400 focus:border-cyan-400 outline-none font-mono uppercase"
+                        autoFocus
                     />
                     <button
                         type="button"
@@ -109,14 +109,7 @@ const SeedModal: React.FC<SeedModalProps> = ({ initialSeed, onSave, onClose, pre
           Use This Seed
         </button>
       </form>
-       <style>{`
-        @keyframes fade-in {
-          from { opacity: 0; transform: scale(0.95); }
-          to { opacity: 1; transform: scale(1); }
-        }
-        .animate-fade-in { animation: fade-in 0.3s ease-out forwards; }
-      `}</style>
-    </div>
+    </ModalWrapper>
   );
 };
 

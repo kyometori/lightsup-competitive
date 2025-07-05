@@ -24,7 +24,7 @@ const ClearRecordControl: React.FC<ClearRecordControlProps> = ({ bestTime, onCle
 
     return (
         <div 
-            className="relative"
+            className="relative pb-2"
             onMouseEnter={() => hasRecord && setIsMenuVisible(true)}
             onMouseLeave={() => setIsMenuVisible(false)}
         >

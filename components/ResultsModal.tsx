@@ -3,6 +3,7 @@ import * as htmlToImage from 'html-to-image';
 import TimerDisplay from './TimerDisplay.tsx';
 import { GameModes, UserPreferences, BestTimeRecord } from '../types.ts';
 import { TrophyIcon, KeyIcon, ClipboardIcon } from './icons.tsx';
+import ModalWrapper from './ModalWrapper.tsx';
 
 interface ResultsModalProps {
   finalTimes: number[];
@@ -28,7 +29,6 @@ const ResultsModal = forwardRef<ResultsModalRef, ResultsModalProps>(({ finalTime
 
   const isNewRecord = previousBestTime === null || totalTime < previousBestTime.time;
   const timeDifference = previousBestTime !== null ? previousBestTime.time - totalTime : 0;
-  const animationClass = preferences.showAnimations ? 'animate-fade-in' : '';
 
   const handleCopy = async () => {
     if (!resultCardRef.current) return;
@@ -62,7 +62,7 @@ const ResultsModal = forwardRef<ResultsModalRef, ResultsModalProps>(({ finalTime
   }));
 
   return (
-    <div className={`fixed inset-0 bg-black/70 flex items-center justify-center p-4 z-50 ${animationClass}`}>
+    <ModalWrapper showAnimations={preferences.showAnimations}>
       <div className="bg-slate-800 rounded-2xl shadow-2xl w-full max-w-md text-center border border-slate-700">
         <div ref={resultCardRef} className="p-6 bg-slate-900 rounded-t-2xl">
             {/* Header */}
@@ -115,7 +115,7 @@ const ResultsModal = forwardRef<ResultsModalRef, ResultsModalProps>(({ finalTime
                     {seed && (
                         <span className={`inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1 rounded-full ${isUserProvidedSeed ? 'bg-yellow-500/20 text-yellow-300' : 'bg-purple-500/20 text-purple-300'}`}>
                             <KeyIcon className="w-3 h-3" />
-                            <span className="font-mono">{seed}</span>
+                            <span className="font-mono whitespace-nowrap">{seed}</span>
                         </span>
                     )}
                 </div>
@@ -146,14 +146,7 @@ const ResultsModal = forwardRef<ResultsModalRef, ResultsModalProps>(({ finalTime
             </div>
         </div>
       </div>
-       <style>{`
-        @keyframes fade-in {
-          from { opacity: 0; transform: scale(0.95); }
-          to { opacity: 1; transform: scale(1); }
-        }
-        .animate-fade-in { animation: fade-in 0.3s ease-out forwards; }
-      `}</style>
-    </div>
+    </ModalWrapper>
   );
 });
 

@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { StopIcon } from './icons.tsx';
 import { UserPreferences } from '../types.ts';
+import ModalWrapper from './ModalWrapper.tsx';
 
 interface HelpModalProps {
   onClose: () => void;
@@ -20,18 +21,9 @@ const HelpModal: React.FC<HelpModalProps> = ({ onClose, preferences }) => {
         window.removeEventListener('keydown', handleKeyDown);
     };
   }, [onClose]);
-  
-  const animationClass = preferences.showAnimations ? 'animate-fade-in' : '';
-
-  const handleOverlayClick = (e: React.MouseEvent<HTMLDivElement>) => {
-    // Close the modal only if the click is on the overlay itself
-    if (e.target === e.currentTarget) {
-      onClose();
-    }
-  };
 
   return (
-    <div onClick={handleOverlayClick} className={`fixed inset-0 bg-black/70 flex items-center justify-center p-4 z-50 ${animationClass}`}>
+    <ModalWrapper onClose={onClose} showAnimations={preferences.showAnimations}>
       <div className="bg-slate-800 rounded-2xl shadow-2xl p-8 w-full max-w-lg text-left border border-slate-700 relative">
         <button 
             onClick={onClose}
@@ -81,14 +73,7 @@ const HelpModal: React.FC<HelpModalProps> = ({ onClose, preferences }) => {
           Got it!
         </button>
       </div>
-       <style>{`
-        @keyframes fade-in {
-          from { opacity: 0; transform: scale(0.95); }
-          to { opacity: 1; transform: scale(1); }
-        }
-        .animate-fade-in { animation: fade-in 0.3s ease-out forwards; }
-      `}</style>
-    </div>
+    </ModalWrapper>
   );
 };
 
