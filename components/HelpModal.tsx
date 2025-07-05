@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { StopIcon } from './icons.tsx';
 import { UserPreferences } from '../types.ts';
 
@@ -8,6 +8,19 @@ interface HelpModalProps {
 }
 
 const HelpModal: React.FC<HelpModalProps> = ({ onClose, preferences }) => {
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            onClose();
+        }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+        window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [onClose]);
+  
   const animationClass = preferences.showAnimations ? 'animate-fade-in' : '';
 
   const handleOverlayClick = (e: React.MouseEvent<HTMLDivElement>) => {

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { UserPreferences } from '../types.ts';
 import { StopIcon } from './icons.tsx';
 
@@ -11,19 +11,32 @@ interface PreferencesModalProps {
 const PreferencesModal: React.FC<PreferencesModalProps> = ({ initialPreferences, onSave, onClose }) => {
   const [prefs, setPrefs] = useState<UserPreferences>(initialPreferences);
 
+  const handleSave = useCallback(() => {
+    onSave(prefs);
+    onClose();
+  }, [prefs, onSave, onClose]);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            handleSave();
+        }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [handleSave]);
+
   const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, checked } = e.target;
     setPrefs(prev => ({ ...prev, [name]: checked }));
+    e.currentTarget.blur();
   };
   
   const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const { name, value } = e.target;
     setPrefs(prev => ({ ...prev, [name]: Number(value) }));
-  };
-
-  const handleSave = () => {
-    onSave(prefs);
-    onClose();
+    e.currentTarget.blur();
   };
 
   const handleOverlayClick = (e: React.MouseEvent<HTMLDivElement>) => {
