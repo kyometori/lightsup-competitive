@@ -16,7 +16,7 @@ const HelpModal: React.FC<HelpModalProps> = ({ onClose, preferences }) => {
         <button 
             onClick={onClose}
             className="absolute top-4 right-4 text-slate-500 hover:text-white transition-colors"
-            aria-label="Close help"
+            aria-label="Close help (Esc)"
         >
             <StopIcon className="w-8 h-8"/>
         </button>
@@ -27,7 +27,7 @@ const HelpModal: React.FC<HelpModalProps> = ({ onClose, preferences }) => {
         </p>
 
         <h3 className="text-2xl font-bold text-cyan-400 mb-3">Game Modes</h3>
-        <div className="space-y-4">
+        <div className="space-y-4 mb-6">
             <div>
                 <h4 className="font-semibold text-lg text-white">Random Start</h4>
                 <p className="text-slate-400">
@@ -41,6 +41,18 @@ const HelpModal: React.FC<HelpModalProps> = ({ onClose, preferences }) => {
                 </p>
             </div>
         </div>
+
+        <h3 className="text-2xl font-bold text-cyan-400 mb-3">Shortcuts</h3>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2 text-slate-300">
+          <div className="flex justify-between items-center border-b border-slate-700 py-1.5"><span>Start Game</span><kbd className="font-mono text-base bg-slate-700/80 px-2 py-0.5 rounded-md">Space</kbd></div>
+          <div className="flex justify-between items-center border-b border-slate-700 py-1.5"><span>Restart Game</span><kbd className="font-mono text-base bg-slate-700/80 px-2 py-0.5 rounded-md">R</kbd></div>
+          <div className="flex justify-between items-center border-b border-slate-700 py-1.5"><span>Quit Game</span><kbd className="font-mono text-base bg-slate-700/80 px-2 py-0.5 rounded-md">Q</kbd></div>
+          <div className="flex justify-between items-center border-b border-slate-700 py-1.5"><span>Open Help</span><kbd className="font-mono text-base bg-slate-700/80 px-2 py-0.5 rounded-md">H</kbd></div>
+          <div className="flex justify-between items-center border-b border-slate-700 py-1.5"><span>Open Preferences</span><kbd className="font-mono text-base bg-slate-700/80 px-2 py-0.5 rounded-md">P</kbd></div>
+          <div className="flex justify-between items-center border-b border-slate-700 py-1.5"><span>Open Seed Menu</span><kbd className="font-mono text-base bg-slate-700/80 px-2 py-0.5 rounded-md">S</kbd></div>
+          <div className="flex justify-between items-center border-b border-slate-700 py-1.5 sm:col-span-2"><span>Close any window</span><kbd className="font-mono text-base bg-slate-700/80 px-2 py-0.5 rounded-md">Esc</kbd></div>
+        </div>
+
          <button
           onClick={onClose}
           className="mt-8 w-full bg-yellow-400 text-slate-900 font-bold py-3 px-6 rounded-lg text-lg hover:bg-yellow-300 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:ring-offset-2 focus:ring-offset-slate-800"

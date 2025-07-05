@@ -49,13 +49,13 @@ const IdleScene: React.FC<IdleSceneProps> = ({
     return (
         <div className={`flex flex-col items-center justify-center text-center p-8 sm:p-10 bg-slate-800/50 rounded-2xl shadow-xl ${animationClass} relative`}>
             <div className="absolute top-4 right-4 flex items-center gap-2">
-                <button onClick={onShowSeedModal} className="text-slate-400 hover:text-yellow-400 transition-colors" aria-label="Set Seed">
+                <button onClick={onShowSeedModal} className="text-slate-400 hover:text-yellow-400 transition-colors" aria-label="Set Seed (S)" title="Set Seed (S)">
                     <KeyIcon className="w-7 h-7" />
                 </button>
-                <button onClick={onShowPreferences} className="text-slate-400 hover:text-yellow-400 transition-colors" aria-label="Settings">
+                <button onClick={onShowPreferences} className="text-slate-400 hover:text-yellow-400 transition-colors" aria-label="Settings (P)" title="Settings (P)">
                     <CogIcon className="w-7 h-7" />
                 </button>
-                <button onClick={onShowHelp} className="text-slate-400 hover:text-yellow-400 transition-colors" aria-label="Help">
+                <button onClick={onShowHelp} className="text-slate-400 hover:text-yellow-400 transition-colors" aria-label="Help (H)" title="Help (H)">
                     <QuestionMarkCircleIcon className="w-7 h-7" />
                 </button>
             </div>

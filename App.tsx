@@ -20,22 +20,62 @@ const App: React.FC = () => {
   // Keyboard shortcuts
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      // Don't trigger shortcuts if a modal is open
-      if (isHelpVisible || isPreferencesModalVisible || isSeedModalVisible) return;
-
-      if (game.gameState === GameState.IDLE && e.code === 'Space') {
-        e.preventDefault();
-        game.startGame();
+      // Escape key closes any open modal. This has top priority.
+      if (e.code === 'Escape') {
+        if (isHelpVisible) {
+          e.preventDefault();
+          setIsHelpVisible(false);
+        }
+        if (isPreferencesModalVisible) {
+          e.preventDefault();
+          setIsPreferencesModalVisible(false);
+        }
+        if (isSeedModalVisible) {
+          e.preventDefault();
+          setIsSeedModalVisible(false);
+        }
+        return;
       }
-      if (game.gameState === GameState.PLAYING || game.gameState === GameState.COUNTDOWN) {
-        if (e.key.toLowerCase() === 'r') {
-          e.preventDefault();
-          game.startGame(); // Restart
-        }
-        if (e.key.toLowerCase() === 'q') {
-          e.preventDefault();
-          game.quitGame();
-        }
+
+      // Don't trigger shortcuts if a text input/select is focused.
+      // This is crucial for the Seed Modal input and Preferences select.
+      const activeElement = document.activeElement;
+      const isInputFocused = activeElement?.tagName === 'INPUT' || activeElement?.tagName === 'SELECT';
+      if (isInputFocused) {
+        return;
+      }
+
+      // Don't trigger other shortcuts if a modal is already open.
+      const isModalOpen = isHelpVisible || isPreferencesModalVisible || isSeedModalVisible;
+      if (isModalOpen) return;
+      
+      // Game state specific shortcuts
+      switch (game.gameState) {
+        case GameState.IDLE:
+          if (e.code === 'Space') {
+            e.preventDefault();
+            game.startGame();
+          } else if (e.code === 'KeyH') {
+            e.preventDefault();
+            setIsHelpVisible(true);
+          } else if (e.code === 'KeyP') {
+            e.preventDefault();
+            setIsPreferencesModalVisible(true);
+          } else if (e.code === 'KeyS') {
+            e.preventDefault();
+            setIsSeedModalVisible(true);
+          }
+          break;
+        case GameState.PLAYING:
+        case GameState.COUNTDOWN:
+          if (e.code === 'KeyR') {
+            e.preventDefault();
+            game.startGame(); // Restart
+          } else if (e.code === 'KeyQ') {
+            e.preventDefault();
+            game.quitGame();
+          }
+          break;
       }
     };
     window.addEventListener('keydown', handleKeyDown);
@@ -137,7 +177,7 @@ const App: React.FC = () => {
     
       {game.gameState === GameState.IDLE && (
           <a
-            href="https://github.com/google-gemini/lights-up-competitive"
+            href="https://github.com/kyometori/lightsup-competitive"
             target="_blank"
             rel="noopener noreferrer"
             className="mt-8 flex items-center gap-2 text-slate-500 hover:text-slate-300 transition-colors"
