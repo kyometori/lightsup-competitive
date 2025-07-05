@@ -54,10 +54,11 @@ const HelpModal: React.FC<HelpModalProps> = ({ onClose, preferences }) => {
           <div className="flex justify-between items-center border-b border-slate-700 py-1.5"><span>Start Game</span><kbd className="font-mono text-base bg-slate-700/80 px-2 py-0.5 rounded-md">Space</kbd></div>
           <div className="flex justify-between items-center border-b border-slate-700 py-1.5"><span>Restart Game</span><kbd className="font-mono text-base bg-slate-700/80 px-2 py-0.5 rounded-md">R</kbd></div>
           <div className="flex justify-between items-center border-b border-slate-700 py-1.5"><span>Quit Game</span><kbd className="font-mono text-base bg-slate-700/80 px-2 py-0.5 rounded-md">Q</kbd></div>
+          <div className="flex justify-between items-center border-b border-slate-700 py-1.5"><span>Copy Results Image</span><kbd className="font-mono text-base bg-slate-700/80 px-2 py-0.5 rounded-md">C</kbd></div>
           <div className="flex justify-between items-center border-b border-slate-700 py-1.5"><span>Open Help</span><kbd className="font-mono text-base bg-slate-700/80 px-2 py-0.5 rounded-md">H</kbd></div>
           <div className="flex justify-between items-center border-b border-slate-700 py-1.5"><span>Open Preferences</span><kbd className="font-mono text-base bg-slate-700/80 px-2 py-0.5 rounded-md">P</kbd></div>
           <div className="flex justify-between items-center border-b border-slate-700 py-1.5"><span>Open Seed Menu</span><kbd className="font-mono text-base bg-slate-700/80 px-2 py-0.5 rounded-md">S</kbd></div>
-          <div className="flex justify-between items-center border-b border-slate-700 py-1.5 sm:col-span-2"><span>Close any window</span><kbd className="font-mono text-base bg-slate-700/80 px-2 py-0.5 rounded-md">Esc</kbd></div>
+          <div className="flex justify-between items-center border-b border-slate-700 py-1.5"><span>Close any window</span><kbd className="font-mono text-base bg-slate-700/80 px-2 py-0.5 rounded-md">Esc</kbd></div>
         </div>
 
          <button

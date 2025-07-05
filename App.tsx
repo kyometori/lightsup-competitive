@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { GameState, UserPreferences } from './types.ts';
 import { useGameEngine } from './hooks/useGameEngine.ts';
-import ResultsModal from './components/ResultsModal.tsx';
+import ResultsModal, { ResultsModalRef } from './components/ResultsModal.tsx';
 import FailureModal from './components/FailureModal.tsx';
 import HelpModal from './components/HelpModal.tsx';
 import PreferencesModal from './components/PreferencesModal.tsx';
@@ -16,6 +16,7 @@ const App: React.FC = () => {
   const [isHelpVisible, setIsHelpVisible] = useState<boolean>(false);
   const [isPreferencesModalVisible, setIsPreferencesModalVisible] = useState<boolean>(false);
   const [isSeedModalVisible, setIsSeedModalVisible] = useState<boolean>(false);
+  const resultsModalRef = useRef<ResultsModalRef>(null);
 
   // Keyboard shortcuts
   useEffect(() => {
@@ -45,13 +46,12 @@ const App: React.FC = () => {
         return;
       }
 
-      // Don't trigger other shortcuts if a modal is already open.
-      const isModalOpen = isHelpVisible || isPreferencesModalVisible || isSeedModalVisible;
-      if (isModalOpen) return;
-      
+      const isSubModalOpen = isHelpVisible || isPreferencesModalVisible || isSeedModalVisible;
+
       // Game state specific shortcuts
       switch (game.gameState) {
         case GameState.IDLE:
+          if (isSubModalOpen) return;
           if (e.code === 'Space') {
             e.preventDefault();
             game.startGame();
@@ -68,6 +68,7 @@ const App: React.FC = () => {
           break;
         case GameState.PLAYING:
         case GameState.COUNTDOWN:
+          if (isSubModalOpen) return;
           if (e.code === 'KeyR') {
             e.preventDefault();
             game.startGame(); // Restart
@@ -76,6 +77,27 @@ const App: React.FC = () => {
             game.quitGame();
           }
           break;
+        case GameState.FINISHED:
+          if (e.code === 'KeyR') {
+            e.preventDefault();
+            game.startGame(); // Restart
+          } else if (e.code === 'KeyQ') {
+            e.preventDefault();
+            game.quitGame();
+          } else if (e.code === 'KeyC') {
+            e.preventDefault();
+            resultsModalRef.current?.handleCopy();
+          }
+          break;
+        case GameState.FAILED:
+            if (e.code === 'KeyR') {
+                e.preventDefault();
+                game.startGame(); // Restart
+            } else if (e.code === 'KeyQ') {
+                e.preventDefault();
+                game.quitGame();
+            }
+            break;
       }
     };
     window.addEventListener('keydown', handleKeyDown);
@@ -152,6 +174,7 @@ const App: React.FC = () => {
 
       {game.gameState === GameState.FINISHED && (
         <ResultsModal 
+          ref={resultsModalRef}
           finalTimes={game.boardTimers}
           totalClicks={game.boardClicks}
           onRestart={game.startGame}
