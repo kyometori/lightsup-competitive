@@ -26,10 +26,17 @@ const PreferencesModal: React.FC<PreferencesModalProps> = ({ initialPreferences,
     onClose();
   };
 
+  const handleOverlayClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    // Close the modal only if the click is on the overlay itself
+    if (e.target === e.currentTarget) {
+      onClose();
+    }
+  };
+
   const animationClass = initialPreferences.showAnimations ? 'animate-fade-in' : '';
 
   return (
-    <div className={`fixed inset-0 bg-black/70 flex items-center justify-center p-4 z-50 ${animationClass}`}>
+    <div onClick={handleOverlayClick} className={`fixed inset-0 bg-black/70 flex items-center justify-center p-4 z-50 ${animationClass}`}>
       <div className="bg-slate-800 rounded-2xl shadow-2xl p-8 w-full max-w-md text-left border border-slate-700 relative">
         <button
           onClick={onClose}
